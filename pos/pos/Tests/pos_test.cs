@@ -15,13 +15,18 @@ namespace pos
         private MockRepository mocks;
         private IDisplay mockDisplay;
         private BarcodeScanner mBarcodeScanner;
+        List<Product> mPoducts;
 
         [SetUp]
         public void SetUp()
         {
             mocks = new MockRepository();
             mockDisplay = mocks.StrictMock<IDisplay>();
-            mBarcodeScanner = new BarcodeScanner(mockDisplay);
+            
+            mPoducts = new List<Product>() {new Product("xyz", 12, false), 
+                new Product("abc", 123, false), new Product("alma", 23, true)};
+
+            mBarcodeScanner = new BarcodeScanner(mPoducts, mockDisplay);
         }
 
         [Test]
@@ -47,8 +52,8 @@ namespace pos
         [Test]
         public void Test_DisplayPriceWithAddedFederalTax()
         {
-            decimal lInitialPrice = 12.0M;
-            decimal lPriceWithFederalTax = lInitialPrice + lInitialPrice * 5  / 100;
+            decimal lInitialPrice = Convert.ToDecimal(12);
+            decimal lPriceWithFederalTax = lInitialPrice * Convert.ToDecimal(1.05);
 
             Expect.Call(delegate { mockDisplay.PrintPrice(lPriceWithFederalTax); });
             mocks.Replay(mockDisplay);
@@ -61,16 +66,35 @@ namespace pos
         [Test]
         public void Test_DisplayPriceWithAddedFederalAndProvincialTax()
         {
-            List<Product> products = new List<Product>() {new Product("xyz", 12, false), 
-                new Product("abc", 123, false), new Product("alma", 23, true)};
-            decimal lPriceWithProvincialTax = Convert.ToDecimal(23 * 1.13);
-            BarcodeScanner mbs = new BarcodeScanner(products, mockDisplay);
+            decimal lPriceWithFederalAndProvincialTax = Convert.ToDecimal(23 * 1.13);
 
-            Expect.Call(delegate { mockDisplay.PrintPrice(lPriceWithProvincialTax); });
+            using (mocks.Record())
+            {
+                Expect.Call(delegate { mockDisplay.PrintPrice(lPriceWithFederalAndProvincialTax); });
+            }
+
+            using (mocks.Playback())
+            {
+                mBarcodeScanner.Scan("alma");    
+            }
+        }
+
+
+        [Test]
+        public void Test_LastCall()
+        {
+            //decimal lInitialPrice = Convert.ToDecimal(12);
+            //decimal lPriceWithFederalTax = lInitialPrice * Convert.ToDecimal(1.05);
+
+            //Expect.Call(delegate { mockDisplay.PrintPrice(lPriceWithFederalTax); });
+            mockDisplay.PrintPrice(0);
+            LastCall.IgnoreArguments().Repeat.Once();
+
             mocks.Replay(mockDisplay);
 
-            mbs.Scan("alma");
+            mBarcodeScanner.Scan("xyz");
             mocks.Verify(mockDisplay);
+
         }
 
         [Test]
