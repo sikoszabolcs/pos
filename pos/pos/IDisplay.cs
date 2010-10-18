@@ -3,6 +3,6 @@ namespace pos
 {
     public interface IDisplay
     {
-        void PrintPrice(int iVal);
+        void PrintPrice(decimal iVal);
     }
 }
