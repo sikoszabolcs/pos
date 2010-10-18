@@ -28,12 +28,10 @@ namespace pos
         public void Test_PriceShouldBeDisplayed()
         {
             Expect.Call(delegate { mockDisplay.PrintPrice((decimal)12.6); });
-            mocks.ReplayAll();
-            //mocks.Replay(mockDisplay);
+            mocks.Replay(mockDisplay);
 
             mBarcodeScanner.Scan("xyz");
-            //mocks.Verify(mockDisplay);
-            mocks.VerifyAll();
+            mocks.Verify(mockDisplay);
         }
 
         [Test]

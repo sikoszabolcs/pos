@@ -75,7 +75,6 @@ namespace pos
 
         public void Scan(string iCode)
         {
-            //Dictionary<string, decimal> prices = new Dictionary<string, decimal> { { "xyz", 12 }, { "abc", 123 } };
             List<Product> products = new List<Product>() {new Product("xyz", 12, false), 
                 new Product("abc", 123, false), new Product("alma", 23, true)};
 
