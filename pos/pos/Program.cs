@@ -12,11 +12,7 @@ namespace pos
     {
         static void Main(string[] args)
         {
-            //BarcodeScanner bs;
-            //Product p;
-            //bs.Scan(p);
-
-           //System.Console.WriteLine();
+         
         }
     }
 }

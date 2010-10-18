@@ -50,8 +50,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Display.cs" />
     <Compile Include="IDisplay.cs" />
-    <Compile Include="pos.cs" />
+    <Compile Include="BarcodeScanner.cs" />
+    <Compile Include="IProduct.cs" />
+    <Compile Include="Product.cs" />
     <Compile Include="Tests\pos_test.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

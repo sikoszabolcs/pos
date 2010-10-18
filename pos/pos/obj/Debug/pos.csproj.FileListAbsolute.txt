@@ -1,0 +1,9 @@
+c:\Documents and Settings\Szabolcs\pos\pos\pos\obj\Debug\ResolveAssemblyReference.cache
+c:\Documents and Settings\Szabolcs\pos\pos\pos\bin\Debug\pos.exe
+c:\Documents and Settings\Szabolcs\pos\pos\pos\bin\Debug\pos.pdb
+c:\Documents and Settings\Szabolcs\pos\pos\pos\bin\Debug\nunit.framework.dll
+c:\Documents and Settings\Szabolcs\pos\pos\pos\bin\Debug\Rhino.Mocks.dll
+c:\Documents and Settings\Szabolcs\pos\pos\pos\bin\Debug\nunit.framework.xml
+c:\Documents and Settings\Szabolcs\pos\pos\pos\bin\Debug\Rhino.Mocks.xml
+c:\Documents and Settings\Szabolcs\pos\pos\pos\obj\Debug\pos.exe
+c:\Documents and Settings\Szabolcs\pos\pos\pos\obj\Debug\pos.pdb

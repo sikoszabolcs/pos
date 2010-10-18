@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="C:\Documents and Settings\Szabolcs\pos\pos\pos\bin\Debug\pos.exe" total="11" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2010-10-18" time="23:09:02">
+  <environment nunit-version="2.5.7.10213" clr-version="2.0.50727.3615" os-version="Microsoft Windows NT 5.1.2600 Service Pack 3" platform="Win32NT" cwd="C:\Program Files\NUnit 2.5.7\bin\net-2.0" machine-name="ARCHIMEDES" user="Szabolcs" user-domain="ARCHIMEDES" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="Assembly" name="C:\Documents and Settings\Szabolcs\pos\pos\pos\bin\Debug\pos.exe" executed="True" result="Success" success="True" time="0.328" asserts="0">
+    <results>
+      <test-suite type="Namespace" name="pos" executed="True" result="Success" success="True" time="0.313" asserts="0">
+        <results>
+          <test-suite type="TestFixture" name="pos_test" executed="True" result="Success" success="True" time="0.313" asserts="0">
+            <results>
+              <test-case name="pos.pos_test.Test_AddMultipleProductsToShoppingCart" executed="True" result="Success" success="True" time="0.266" asserts="0" />
+              <test-case name="pos.pos_test.Test_AddMultipleProductsToShoppingCartAndPrintBill" executed="True" result="Success" success="True" time="0.016" asserts="1" />
+              <test-case name="pos.pos_test.Test_BarcodeScanner_And_PrintPrice_Interaction_With_LastCall" executed="True" result="Success" success="True" time="0.016" asserts="0" />
+              <test-case name="pos.pos_test.Test_DailyCardReport" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+              <test-case name="pos.pos_test.Test_DailyCashReport" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+              <test-case name="pos.pos_test.Test_DailyReport" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+              <test-case name="pos.pos_test.Test_DisplayPriceWithAddedFederalAndProvincialTax" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+              <test-case name="pos.pos_test.Test_DisplayPriceWithAddedFederalTax" executed="True" result="Success" success="True" time="0.016" asserts="0" />
+              <test-case name="pos.pos_test.Test_PriceShouldBeDisplayed" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+              <test-case name="pos.pos_test.Test_PriceShouldBeDisplayed_Duplicate" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+              <test-case name="pos.pos_test.Test_ProductPriceWithFederalTaxOnly_With_ManualIDisplayMock" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
