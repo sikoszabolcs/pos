@@ -13,6 +13,11 @@ namespace pos
             mCurrentlyOnDisplay = iVal;
             return iVal;
         }
+
+        public void Dummy()
+        {
+
+        }
     }
     /// <summary>
     /// 

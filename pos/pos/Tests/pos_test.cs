@@ -27,8 +27,8 @@ namespace pos
         [Test]
         public void Test_PriceShouldBeDisplayed()
         {
-            //Expect.Call(mockDisplay.PrintPrice(12)).Return(12);
-            Expect.Call(mockDisplay.PrintPrice(12)).Return(12);
+            Expect.Call(mockDisplay.Dummy);
+            //Expect.Call(mockDisplay.PrintPrice(12)).Return(0);
             mocks.ReplayAll();
             int result = mBarcodeScanner.Scan("xyz");
 
