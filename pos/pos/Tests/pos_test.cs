@@ -27,13 +27,35 @@ namespace pos
         [Test]
         public void Test_PriceShouldBeDisplayed()
         {
-            Expect.Call(mockDisplay.Dummy);
-            //Expect.Call(mockDisplay.PrintPrice(12)).Return(0);
+            Expect.Call(delegate { mockDisplay.PrintPrice(12); });
             mocks.ReplayAll();
-            int result = mBarcodeScanner.Scan("xyz");
 
-            mocks.VerifyAll();
+            mBarcodeScanner.Scan("xyz");
+            mocks.Verify(mockDisplay);
+        }
+
+        [Test]
+        public void Test_PriceShouldBeDisplayed_Rec()
+        {
+            Expect.Call(delegate { mockDisplay.PrintPrice(123); });
+            mocks.Replay(mockDisplay);
+
+            mBarcodeScanner.Scan("abc");
+            mocks.Verify(mockDisplay);
+        }
+
+        [Test]
+        public void Test_DisplayPriceWithAddedFederalTax()
+        {
+            int lInitialPrice = 12;
+            int lPriceWithFederalTax = lInitialPrice + 5 / 100;
+
+            Expect.Call(delegate { mockDisplay.PrintPrice(lPriceWithFederalTax); });
+            mocks.Replay(mockDisplay);
+
+            mBarcodeScanner.Scan("xyz");
+            mocks.Verify(mockDisplay);
+
         }
     }
-
 }
