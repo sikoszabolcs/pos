@@ -61,15 +61,40 @@ namespace pos
         [Test]
         public void Test_DisplayPriceWithAddedFederalAndProvincialTax()
         {
-            decimal lInitialPrice = Convert.ToDecimal(23);
-            decimal lPriceWithProvincialTax = lInitialPrice + decimal.Multiply(lInitialPrice, 8) / 100 +
-                decimal.Multiply(lInitialPrice, 5) / 100;
+            List<Product> products = new List<Product>() {new Product("xyz", 12, false), 
+                new Product("abc", 123, false), new Product("alma", 23, true)};
+            decimal lPriceWithProvincialTax = Convert.ToDecimal(23 * 1.13);
+            BarcodeScanner mbs = new BarcodeScanner(products, mockDisplay);
 
             Expect.Call(delegate { mockDisplay.PrintPrice(lPriceWithProvincialTax); });
             mocks.Replay(mockDisplay);
 
-            mBarcodeScanner.Scan("alma");
+            mbs.Scan("alma");
             mocks.Verify(mockDisplay);
+        }
+
+        [Test]
+        public void Test_CreateBill()
+        {
+
+
+
+        }
+
+        [Test]
+        public void Test_CardReport()
+        {
+        }
+
+        [Test]
+        public void Test_CashReport()
+        {
+        }
+
+        [Test]
+        public void Test_EndOfTheDayReport()
+        {
+
         }
     }
 }

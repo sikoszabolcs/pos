@@ -51,6 +51,13 @@ namespace pos
     public class BarcodeScanner
     {
         private IDisplay mDisplay;
+        private List<Product> mProductList;
+
+        public BarcodeScanner(List<Product> prlist, IDisplay iDisplay)
+        {
+            mProductList = prlist;
+            mDisplay = iDisplay;
+        }
 
         public BarcodeScanner(IDisplay iDisp)
         {
@@ -75,11 +82,9 @@ namespace pos
 
         public void Scan(string iCode)
         {
-            List<Product> products = new List<Product>() {new Product("xyz", 12, false), 
-                new Product("abc", 123, false), new Product("alma", 23, true)};
-
-            Product pr = products.Find(delegate(Product prod) { return prod.Code == iCode; });
-            mDisplay.PrintPrice(AddTax(pr));
+            Product pr = mProductList.Find(delegate(Product prod) { return prod.Code == iCode; });
+            decimal priceWithTax = AddTax(pr);
+            mDisplay.PrintPrice(priceWithTax);
         }
     }
 }
