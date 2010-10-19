@@ -66,10 +66,10 @@ namespace pos
         [Test]
         public void Test_AddMultipleProductsToShoppingCart()
         {
-            Expect.Call(delegate { mockDisplay.PrintPrice(mPoducts.Find(delegate(Product prod) { return prod.Code == "apple"; })); });
-            Expect.Call(delegate { mockDisplay.PrintPrice(mPoducts.Find(delegate(Product prod) { return prod.Code == "orange"; })); });
-            Expect.Call(delegate { mockDisplay.PrintPrice(mPoducts.Find(delegate(Product prod) { return prod.Code == "kiwi"; })); });
-            Expect.Call(delegate { mockDisplay.PrintPrice(mPoducts.Find(delegate(Product prod) { return prod.Code == "grapes"; })); });
+            Expect.Call(delegate { mockDisplay.PrintPrice(mPoducts.Find(p => p.Code == "apple")); });
+            Expect.Call(delegate { mockDisplay.PrintPrice(mPoducts.Find(p => p.Code == "orange")); });
+            Expect.Call(delegate { mockDisplay.PrintPrice(mPoducts.Find(p => p.Code == "kiwi")); });
+            Expect.Call(delegate { mockDisplay.PrintPrice(mPoducts.Find(p => p.Code == "grapes")); });
 
             mocks.Replay(mockDisplay);
 
@@ -96,7 +96,7 @@ namespace pos
         public void Test_PriceShouldBeDisplayed()
         {
             string lProductCode = "xyz";
-            Product lProd = mPoducts.Find(delegate(Product prod) { return prod.Code == lProductCode; });
+            Product lProd = mPoducts.Find(p => p.Code == lProductCode);
             Expect.Call(delegate { mockDisplay.PrintPrice(lProd); });
             mocks.Replay(mockDisplay);
 
@@ -108,7 +108,7 @@ namespace pos
         public void Test_PriceShouldBeDisplayed_Duplicate()
         {
             string lProductCode = "abc";
-            Product lProd = mPoducts.Find(delegate(Product prod) { return prod.Code == lProductCode; });
+            Product lProd = mPoducts.Find(p => p.Code == lProductCode);
             Expect.Call(delegate { mockDisplay.PrintPrice(lProd); });
             mocks.Replay(mockDisplay);
 
@@ -120,7 +120,7 @@ namespace pos
         public void Test_DisplayPriceWithAddedFederalTax()
         {
             string lProductCode = "xyz";
-            Product lProd = mPoducts.Find(delegate(Product prod) { return prod.Code == lProductCode; });
+            Product lProd = mPoducts.Find(p => p.Code == lProductCode);
             Expect.Call(delegate { mockDisplay.PrintPrice(lProd); });
             mocks.Replay(mockDisplay);
 
@@ -132,10 +132,8 @@ namespace pos
         [Test]
         public void Test_DisplayPriceWithAddedFederalAndProvincialTax()
         {
-
             string lProductCode = "xyz";
-            Product lProd = mPoducts.Find(delegate(Product prod) { return prod.Code == lProductCode; });
-            //Expect.Call(delegate { mockDisplay.PrintPrice(lProd); });
+            Product lProd = mPoducts.Find(p => p.Code == lProductCode);
 
             using (mocks.Record())
             {
