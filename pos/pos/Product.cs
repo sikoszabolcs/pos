@@ -7,21 +7,21 @@ namespace pos
 {
     public class Product : pos.IProduct
     {
-        public Product(string iName, decimal iPrice, bool iIsProvincialTaxApplicable)
+        public Product(string iName, decimal iPrice, bool iPstExempt)
         {
-            mCode = iName;
-            mPrice = iPrice;
-            mIsProvincialTaxApplicable = iIsProvincialTaxApplicable;
+            _mCode = iName;
+            _mPrice = iPrice;
+            _mPstExempt = iPstExempt;
         }
 
-        private string mCode;
-        public string Code { get { return mCode; } }
+        private readonly string _mCode;
+        public string Code { get { return _mCode; } }
 
-        private decimal mPrice;
-        public decimal Price { get { return mPrice; } }
+        private readonly decimal _mPrice;
+        public decimal Price { get { return _mPrice; } }
 
-        private bool mIsProvincialTaxApplicable;
-        public bool IsProvincialTaxApplicable { get { return mIsProvincialTaxApplicable; } }
+        private readonly bool _mPstExempt;
+        public bool PstExempt { get { return _mPstExempt; } }
 
     }
 }

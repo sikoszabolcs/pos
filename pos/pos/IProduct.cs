@@ -1,10 +1,10 @@
 ﻿using System;
 namespace pos
 {
-    interface IProduct
+    public interface IProduct
     {
         string Code { get; }
-        bool IsProvincialTaxApplicable { get; }
+        bool PstExempt { get; }
         decimal Price { get; }
     }
 }

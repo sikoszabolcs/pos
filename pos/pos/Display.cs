@@ -7,38 +7,31 @@ namespace pos
 {
     public class Display : pos.IDisplay
     {
-        private decimal mCurrentlyOnDisplay;
+        private TaxManager _mTaxManager;
+        protected decimal MCurrentlyOnDisplay;
+        public readonly List<Product> ShoppingCart = new List<Product>();
 
-        private List<Product> mShoppingCart = new List<Product>();
+        public Display(TaxManager iTaxManager)
+        {
+            _mTaxManager = iTaxManager;
+        }
+
         public virtual void PrintPrice(Product iProduct)
         {
-            mCurrentlyOnDisplay = BarcodeScanner.AddTax(iProduct);
-            mShoppingCart.Add(iProduct);
-        }
-
-        public virtual string PrintBill()
-        {
-            string lOutputBill = "";
-
-            foreach (Product aProduct in mShoppingCart)
-            {
-                lOutputBill += aProduct.Price.ToString() + ";" + BarcodeScanner.AddTax(aProduct).ToString() + "|";
-            }
-            mShoppingCart.Clear();
-
-            return lOutputBill;
+            MCurrentlyOnDisplay = _mTaxManager.GetTotalApplicableTax(iProduct);
+            ShoppingCart.Add(iProduct);
         }
     }
 
-    public class DisplayWithCurrency : Display
-    {
-        private string mCurrency = "RON";
-        public DisplayWithCurrency(string iCurrency)
-        {
-            mCurrency = iCurrency;
-        }
-        public DisplayWithCurrency()
-        {
-        }
-    }
+    //public class ConsoleCurrencyDisplayer : Display
+    //{
+    //    private string _mCurrency = "$";
+    //    public ConsoleCurrencyDisplayer(string iCurrency)
+    //    {
+    //        _mCurrency = iCurrency;
+    //    }
+    //    public ConsoleCurrencyDisplayer()
+    //    {
+    //    }
+    //}
 }

@@ -1,25 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\Documents and Settings\Szabolcs\pos\pos\pos\bin\Debug\pos.exe" total="11" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2010-10-18" time="23:09:02">
+<test-results name="C:\Documents and Settings\Szabolcs\pos\pos\pos\bin\Debug\pos.exe" total="12" errors="0" failures="2" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2010-10-19" time="17:07:04">
   <environment nunit-version="2.5.7.10213" clr-version="2.0.50727.3615" os-version="Microsoft Windows NT 5.1.2600 Service Pack 3" platform="Win32NT" cwd="C:\Program Files\NUnit 2.5.7\bin\net-2.0" machine-name="ARCHIMEDES" user="Szabolcs" user-domain="ARCHIMEDES" />
   <culture-info current-culture="en-US" current-uiculture="en-US" />
-  <test-suite type="Assembly" name="C:\Documents and Settings\Szabolcs\pos\pos\pos\bin\Debug\pos.exe" executed="True" result="Success" success="True" time="0.328" asserts="0">
+  <test-suite type="Assembly" name="C:\Documents and Settings\Szabolcs\pos\pos\pos\bin\Debug\pos.exe" executed="True" result="Failure" success="False" time="0.422" asserts="0">
     <results>
-      <test-suite type="Namespace" name="pos" executed="True" result="Success" success="True" time="0.313" asserts="0">
+      <test-suite type="Namespace" name="pos" executed="True" result="Failure" success="False" time="0.406" asserts="0">
         <results>
-          <test-suite type="TestFixture" name="pos_test" executed="True" result="Success" success="True" time="0.313" asserts="0">
+          <test-suite type="Namespace" name="Tests" executed="True" result="Failure" success="False" time="0.406" asserts="0">
             <results>
-              <test-case name="pos.pos_test.Test_AddMultipleProductsToShoppingCart" executed="True" result="Success" success="True" time="0.266" asserts="0" />
-              <test-case name="pos.pos_test.Test_AddMultipleProductsToShoppingCartAndPrintBill" executed="True" result="Success" success="True" time="0.016" asserts="1" />
-              <test-case name="pos.pos_test.Test_BarcodeScanner_And_PrintPrice_Interaction_With_LastCall" executed="True" result="Success" success="True" time="0.016" asserts="0" />
-              <test-case name="pos.pos_test.Test_DailyCardReport" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-              <test-case name="pos.pos_test.Test_DailyCashReport" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-              <test-case name="pos.pos_test.Test_DailyReport" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-              <test-case name="pos.pos_test.Test_DisplayPriceWithAddedFederalAndProvincialTax" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-              <test-case name="pos.pos_test.Test_DisplayPriceWithAddedFederalTax" executed="True" result="Success" success="True" time="0.016" asserts="0" />
-              <test-case name="pos.pos_test.Test_PriceShouldBeDisplayed" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-              <test-case name="pos.pos_test.Test_PriceShouldBeDisplayed_Duplicate" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-              <test-case name="pos.pos_test.Test_ProductPriceWithFederalTaxOnly_With_ManualIDisplayMock" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+              <test-suite type="TestFixture" name="PosTest" executed="True" result="Failure" success="False" time="0.406" asserts="0">
+                <results>
+                  <test-case name="pos.Tests.PosTest.TestAddMultipleProductsToShoppingCart" executed="True" result="Success" success="True" time="0.281" asserts="0" />
+                  <test-case name="pos.Tests.PosTest.TestAddMultipleProductsToShoppingCartAndPrintBill" executed="True" result="Success" success="True" time="0.016" asserts="1" />
+                  <test-case name="pos.Tests.PosTest.TestBarcodeScannerAndPrintPriceInteractionWithLastCall" executed="True" result="Success" success="True" time="0.016" asserts="0" />
+                  <test-case name="pos.Tests.PosTest.TestDisplayPriceWithAddedFederalAndProvincialTax" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="pos.Tests.PosTest.TestDisplayPriceWithAddedFederalTax" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="pos.Tests.PosTest.TestNoSuchProductFound" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="pos.Tests.PosTest.TestPriceShouldBeDisplayed" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="pos.Tests.PosTest.TestPriceShouldBeDisplayedDuplicate" executed="True" result="Success" success="True" time="0.016" asserts="0" />
+                  <test-case name="pos.Tests.PosTest.TestPrintBill" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="pos.Tests.PosTest.TestProductPriceWithFederalTaxOnlyWithManualIDisplayMock" executed="True" result="Failure" success="False" time="0.031" asserts="1">
+                    <failure>
+                      <message><![CDATA[  Expected: 13.56m
+  But was:  0m
+]]></message>
+                      <stack-trace><![CDATA[at pos.Tests.PosTest.TestProductPriceWithFederalTaxOnlyWithManualIDisplayMock() in C:\Documents and Settings\Szabolcs\pos\pos\pos\Tests\pos_test.cs:line 97
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case name="pos.Tests.PosTest.TestTaxManagerFederalTaxRate" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                  <test-case name="pos.Tests.PosTest.TestTaxManagerPrivincialTaxRate" executed="True" result="Failure" success="False" time="0.000" asserts="1">
+                    <failure>
+                      <message><![CDATA[  Expected: 277.7088m
+  But was:  258.048m
+]]></message>
+                      <stack-trace><![CDATA[at pos.Tests.PosTest.TestTaxManagerPrivincialTaxRate() in C:\Documents and Settings\Szabolcs\pos\pos\pos\Tests\pos_test.cs:line 202
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
             </results>
           </test-suite>
         </results>

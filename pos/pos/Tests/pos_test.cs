@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System.Collections;
-//using NMock2;
 
-namespace pos
+namespace pos.Tests
 {
     public class ManualDisplayMock : IDisplay
     {
         public decimal Price = 0;
         public void PrintPrice(Product iProduct)
         {
-            Price = BarcodeScanner.AddTax(iProduct);
+            Price = 0;
         }
 
         public string PrintBill()
@@ -25,153 +21,196 @@ namespace pos
     }
 
     [TestFixture]
-    class pos_test
+    class PosTest
     {
-        private MockRepository mocks;
-        private IDisplay mockDisplay;
-        private BarcodeScanner mBarcodeScanner;
-        List<Product> mPoducts;
+        private MockRepository _mocks;
+        private IDisplay _mockDisplay;
+        private BarcodeScannerDataProcessor _mBarcodeScannerDataProcessor;
+        List<Product> _mPoducts;
+        private TaxManager _mTaxManager;
+        private Display _mDisplay;
+
+        private decimal _mFederalTaxRate = (decimal) 0.05;
+        private decimal _mProvincialTaxRate = (decimal) 0.08;
 
         [SetUp]
         public void SetUp()
         {
-            mocks = new MockRepository();
-            mockDisplay = mocks.StrictMock<IDisplay>();
+            _mocks = new MockRepository();
+            _mockDisplay = _mocks.StrictMock<IDisplay>();
             
-            mPoducts = new List<Product>() {new Product("xyz", 12, false), 
+            _mPoducts = new List<Product>() {new Product("xyz", 12, false), 
                 new Product("abc", 123, false), new Product("alma", 23, true),
                 new Product("apple", 34, false), new Product("orange", 36, false), 
                 new Product("kiwi", 19, true), new Product("grapes", 98, true)
             };
 
-            mBarcodeScanner = new BarcodeScanner(mPoducts, mockDisplay);
+            _mBarcodeScannerDataProcessor = new BarcodeScannerDataProcessor(_mPoducts, _mockDisplay);
+
+            _mTaxManager = new TaxManager(_mFederalTaxRate, _mProvincialTaxRate);
+            _mDisplay = new Display(_mTaxManager);
         }
 
+
         [Test]
-        public void Test_AddMultipleProductsToShoppingCartAndPrintBill()
+        public void TestAddMultipleProductsToShoppingCartAndPrintBill()
         {
-            Display lDs = new Display();
-            BarcodeScanner lBs = new BarcodeScanner(mPoducts,lDs);
+            var lPrinter = new ConsolePrinter();
+            var lBs = new BarcodeScannerDataProcessor(_mPoducts, _mDisplay, lPrinter);
 
             lBs.Scan("apple");
             lBs.Scan("orange");
             lBs.Scan("kiwi");
             lBs.Scan("grapes");
 
-            string lsBill = lDs.PrintBill();
+            string lsBill = lPrinter.PrintBill(_mDisplay.ShoppingCart);
 
-            Assert.AreEqual("34;35.7|36;37.8|19;21.47|98;110.74|", lsBill);
+            Assert.AreEqual("$34GP\r\n$36GP\r\n$19G\r\n$98G\r\nSubtotal: 187\r\nGST: 9.35\r\nPST: 5.60\r\n------\r\nTOTAL: 201.95\r\n", lsBill);
         }
 
         [Test]
-        public void Test_AddMultipleProductsToShoppingCart()
+        public void TestAddMultipleProductsToShoppingCart()
         {
-            Expect.Call(delegate { mockDisplay.PrintPrice(mPoducts.Find(p => p.Code == "apple")); });
-            Expect.Call(delegate { mockDisplay.PrintPrice(mPoducts.Find(p => p.Code == "orange")); });
-            Expect.Call(delegate { mockDisplay.PrintPrice(mPoducts.Find(p => p.Code == "kiwi")); });
-            Expect.Call(delegate { mockDisplay.PrintPrice(mPoducts.Find(p => p.Code == "grapes")); });
+            Expect.Call(() => _mockDisplay.PrintPrice(_mPoducts.Find(p => p.Code == "apple")));
+            Expect.Call(() => _mockDisplay.PrintPrice(_mPoducts.Find(p => p.Code == "orange")));
+            Expect.Call(() => _mockDisplay.PrintPrice(_mPoducts.Find(p => p.Code == "kiwi")));
+            Expect.Call(() => _mockDisplay.PrintPrice(_mPoducts.Find(p => p.Code == "grapes")));
 
-            mocks.Replay(mockDisplay);
+            _mocks.Replay(_mockDisplay);
 
-            mBarcodeScanner.Scan("apple");
-            mBarcodeScanner.Scan("orange");
-            mBarcodeScanner.Scan("kiwi");
-            mBarcodeScanner.Scan("grapes");
+            _mBarcodeScannerDataProcessor.Scan("apple");
+            _mBarcodeScannerDataProcessor.Scan("orange");
+            _mBarcodeScannerDataProcessor.Scan("kiwi");
+            _mBarcodeScannerDataProcessor.Scan("grapes");
 
-            mocks.Verify(mockDisplay);
+            _mocks.Verify(_mockDisplay);
         }
 
 
         [Test]
-        public void Test_ProductPriceWithFederalTaxOnly_With_ManualIDisplayMock()
+        public void TestProductPriceWithFederalTaxOnlyWithManualIDisplayMock()
         {
             var displayMock = new ManualDisplayMock();
-            BarcodeScanner lBs = new BarcodeScanner(mPoducts, displayMock);
+            var lBs = new BarcodeScannerDataProcessor(_mPoducts, displayMock);
 
             lBs.Scan("xyz");
-            Assert.AreEqual(Convert.ToDecimal(12.6), displayMock.Price);
+            Assert.AreEqual(Convert.ToDecimal(13.56), displayMock.Price);
         }
 
         [Test]
-        public void Test_PriceShouldBeDisplayed()
+        public void TestPriceShouldBeDisplayed()
         {
-            string lProductCode = "xyz";
-            Product lProd = mPoducts.Find(p => p.Code == lProductCode);
-            Expect.Call(delegate { mockDisplay.PrintPrice(lProd); });
-            mocks.Replay(mockDisplay);
+            const string lProductCode = "xyz";
+            Product lProd = _mPoducts.Find(p => p.Code == lProductCode);
+            Expect.Call(() => _mockDisplay.PrintPrice(lProd));
+            _mocks.Replay(_mockDisplay);
 
-            mBarcodeScanner.Scan(lProductCode);
-            mocks.Verify(mockDisplay);
+            _mBarcodeScannerDataProcessor.Scan(lProductCode);
+            _mocks.Verify(_mockDisplay);
         }
 
         [Test]
-        public void Test_PriceShouldBeDisplayed_Duplicate()
+        public void TestNoSuchProductFound()
         {
-            string lProductCode = "abc";
-            Product lProd = mPoducts.Find(p => p.Code == lProductCode);
-            Expect.Call(delegate { mockDisplay.PrintPrice(lProd); });
-            mocks.Replay(mockDisplay);
+            const string lProductCode = "xyz";
+            Product lProd = _mPoducts.Find(p => p.Code == lProductCode);
+            Expect.Call(() => _mockDisplay.PrintPrice(lProd));
+            _mocks.Replay(_mockDisplay);
 
-            mBarcodeScanner.Scan(lProductCode);
-            mocks.Verify(mockDisplay);
+            _mBarcodeScannerDataProcessor.Scan(lProductCode);
+            _mocks.Verify(_mockDisplay);
+
+            
         }
 
         [Test]
-        public void Test_DisplayPriceWithAddedFederalTax()
+        public void TestPriceShouldBeDisplayedDuplicate()
         {
-            string lProductCode = "xyz";
-            Product lProd = mPoducts.Find(p => p.Code == lProductCode);
-            Expect.Call(delegate { mockDisplay.PrintPrice(lProd); });
-            mocks.Replay(mockDisplay);
+            const string lProductCode = "abc";
+            Product lProd = _mPoducts.Find(p => p.Code == lProductCode);
+            Expect.Call(() => _mockDisplay.PrintPrice(lProd));
+            _mocks.Replay(_mockDisplay);
 
-            mBarcodeScanner.Scan("xyz");
-            mocks.Verify(mockDisplay);
+            _mBarcodeScannerDataProcessor.Scan(lProductCode);
+            _mocks.Verify(_mockDisplay);
+        }
+
+        [Test]
+        public void TestDisplayPriceWithAddedFederalTax()
+        {
+            const string lProductCode = "xyz";
+            Product lProd = _mPoducts.Find(p => p.Code == lProductCode);
+            Expect.Call(delegate { _mockDisplay.PrintPrice(lProd); });
+            _mocks.Replay(_mockDisplay);
+
+            _mBarcodeScannerDataProcessor.Scan("xyz");
+            _mocks.Verify(_mockDisplay);
 
         }
 
         [Test]
-        public void Test_DisplayPriceWithAddedFederalAndProvincialTax()
+        public void TestDisplayPriceWithAddedFederalAndProvincialTax()
         {
-            string lProductCode = "xyz";
-            Product lProd = mPoducts.Find(p => p.Code == lProductCode);
+            const string lProductCode = "xyz";
+            Product lProd = _mPoducts.Find(p => p.Code == lProductCode);
 
-            using (mocks.Record())
+            using (_mocks.Record())
             {
-                Expect.Call(delegate { mockDisplay.PrintPrice(lProd); });
+                Expect.Call(() => _mockDisplay.PrintPrice(lProd));
             }
 
-            using (mocks.Playback())
+            using (_mocks.Playback())
             {
-                mBarcodeScanner.Scan(lProductCode);
+                _mBarcodeScannerDataProcessor.Scan(lProductCode);
             }
         }
 
         [Test]
-        public void Test_BarcodeScanner_And_PrintPrice_Interaction_With_LastCall()
+        public void TestBarcodeScannerAndPrintPriceInteractionWithLastCall()
         {
-            mockDisplay.PrintPrice(null);
+            _mockDisplay.PrintPrice(null);
             LastCall.IgnoreArguments();
-            mocks.Replay(mockDisplay);
+            _mocks.Replay(_mockDisplay);
 
-            mBarcodeScanner.Scan("xyz");
-            mocks.Verify(mockDisplay);
+            _mBarcodeScannerDataProcessor.Scan("xyz");
+            _mocks.Verify(_mockDisplay);
         }
 
+
+        [Test]
+        public void TestTaxManagerFederalTaxRate()
+        {
+            decimal lFederalTaxRate = (decimal) 0.05;
+            decimal lProvincialTaxRate = (decimal) 0.08;
+
+            TaxManager lMyTaxManager = new TaxManager(lFederalTaxRate, lProvincialTaxRate);
+            Product lProduct = new Product("test", (decimal)245.76, true);
+
+            Assert.AreEqual(lProduct.Price + Decimal.Multiply(lProduct.Price, lFederalTaxRate), 
+                lMyTaxManager.GetPriceWithAppliedFederalTax(lProduct));
+        }
+
+        [Test]
+        public void TestTaxManagerPrivincialTaxRate()
+        {
+            decimal lFederalTaxRate = (decimal)0.05;
+            decimal lProvincialTaxRate = (decimal)0.08;
+
+            TaxManager lMyTaxManager = new TaxManager(lFederalTaxRate, lProvincialTaxRate);
+            Product lProduct = new Product("test", (decimal)245.76, true);
+
+            Assert.AreEqual(lProduct.Price + 
+                (lProduct.PstExempt ? 0 : Decimal.Multiply(lProduct.Price, lProvincialTaxRate)) 
+            ,lMyTaxManager.GetPriceWithAppliedProvincialTax(lProduct));
+        }
        
         [Test]
-        public void Test_DailyCardReport()
-        {
-        }
-
-        [Test]
-        public void Test_DailyCashReport()
-        {
-        }
-
-        [Test]
-        public void Test_DailyReport()
+        public void TestPrintBill()
         {
 
         }
-    }
+
+      }
+
+   
 }

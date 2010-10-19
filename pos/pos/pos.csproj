@@ -52,9 +52,12 @@
   <ItemGroup>
     <Compile Include="Display.cs" />
     <Compile Include="IDisplay.cs" />
-    <Compile Include="BarcodeScanner.cs" />
+    <Compile Include="BarcodeScannerDataProcessor.cs" />
+    <Compile Include="IPrinter.cs" />
     <Compile Include="IProduct.cs" />
+    <Compile Include="Printer.cs" />
     <Compile Include="Product.cs" />
+    <Compile Include="TaxManager.cs" />
     <Compile Include="Tests\pos_test.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
